@@ -1,6 +1,6 @@
 # Design Templates site
 
-The public address for Cru Creative 1's Canva template gallery: **https://templates.crutastic.com**
+The public address for Cru Creative 1 Media's Canva template gallery: **https://templates.crutastic.com**
 
 This repo is just a frame. `index.html` fills the window with the gallery, which runs on Google Apps Script (project folder: `Projects/CanvaTemplateGallery`). Framing it hides Google's "created by a Google Apps Script user" banner.
 
