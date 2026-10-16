@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design Templates | Cru Creative 1</title>
+  <meta name="description" content="Free Canva templates from Cru Creative 1 for student and volunteer led movements. Tap a design and your own editable copy opens in Canva.">
+  <meta property="og:title" content="Design Templates from Cru Creative 1">
+  <meta property="og:description" content="Free Canva templates for student and volunteer led movements. Tap a design and your own editable copy opens in Canva.">
+  <meta property="og:url" content="https://templates.crutastic.com/">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    html, body { margin: 0; height: 100%; background: #fff; }
+    /* The gallery fills the whole window. dvh keeps phones from cutting off the bottom. */
+    iframe { display: block; border: 0; width: 100%; height: 100vh; height: 100dvh; }
+    .fallback {
+      position: fixed; inset: 0; z-index: -1; display: grid; place-items: center; padding: 16px;
+      font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; color: #565652; text-align: center;
+    }
+    .fallback a { color: #007990; }
+  </style>
+</head>
+<body>
+  <!--
+    This page frames the Design Templates gallery, which runs on Google Apps Script.
+    Framing it hides Google's "created by a Google Apps Script user" banner.
+    The gallery itself (and everything designers add) lives in the Apps Script project.
+  -->
+  <p class="fallback">Loading designs... If nothing shows up, <a id="direct" href="#">open the gallery directly</a>.</p>
+  <iframe id="app" title="Design Templates from Cru Creative 1"></iframe>
+  <noscript><style>.fallback { z-index: 1; }</style></noscript>
+
+  <script>
+    (function () {
+      var GALLERY = 'https://script.google.com/macros/s/AKfycbwQioMI8A0DwemLLLtDo0CLR_eKjR0uKSSAraKZ__efaqtBXoFVQWe3H0fU-A4Uf4ySNg/exec';
+      var url = GALLERY;
+      // Pass ?event=... through so links to a single event still work
+      var ev = new URLSearchParams(location.search).get('event');
+      if (ev && /^[\w-]{1,40}$/.test(ev)) url += '?event=' + encodeURIComponent(ev);
+      document.getElementById('app').src = url;
+      document.getElementById('direct').href = url;
+    })();
+  </script>
+</body>
+</html>
