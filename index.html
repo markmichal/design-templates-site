@@ -11,37 +11,105 @@
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#ffffff">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <style>
-    html, body { margin: 0; height: 100%; background: #fff; }
-    /* The gallery fills the whole window. dvh keeps phones from cutting off the bottom. */
-    iframe { display: block; border: 0; width: 100%; height: 100vh; height: 100dvh; }
-    .fallback {
-      position: fixed; inset: 0; z-index: -1; display: grid; place-items: center; padding: 16px;
-      font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; color: #565652; text-align: center;
-    }
-    .fallback a { color: #007990; }
-  </style>
+  <!-- Start connecting early to where the designs, pictures and fonts come from -->
+  <link rel="preconnect" href="https://script.google.com">
+  <link rel="preconnect" href="https://script.googleusercontent.com">
+  <link rel="preconnect" href="https://drive.google.com">
+  <link rel="preconnect" href="https://lh3.googleusercontent.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <!--
-    This page frames the Design Templates gallery, which runs on Google Apps Script.
-    Framing it hides Google's "created by a Google Apps Script user" banner.
-    The gallery itself (and everything designers add) lives in the Apps Script project.
-  -->
-  <p class="fallback">Loading designs... If nothing shows up, <a id="direct" href="#">open the gallery directly</a>.</p>
-  <iframe id="app" title="Design Templates from Cru Creative 1 Media"></iframe>
-  <noscript><style>.fallback { z-index: 1; }</style></noscript>
+<body class="is-loading">
 
-  <script>
-    (function () {
-      var GALLERY = 'https://script.google.com/macros/s/AKfycbwQioMI8A0DwemLLLtDo0CLR_eKjR0uKSSAraKZ__efaqtBXoFVQWe3H0fU-A4Uf4ySNg/exec';
-      var url = GALLERY;
-      // Pass ?event=... through so links to a single event still work
-      var ev = new URLSearchParams(location.search).get('event');
-      if (ev && /^[\w-]{1,40}$/.test(ev)) url += '?event=' + encodeURIComponent(ev);
-      document.getElementById('app').src = url;
-      document.getElementById('direct').href = url;
-    })();
-  </script>
+  <header class="topnav">
+    <div class="wrap">
+      <div class="brand">
+        <svg class="cru-logo" role="img" aria-label="Cru" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="194 194 994 612"><defs><style>.cru-logo .lb{fill:#ffd000;}.cru-logo .lc{fill:#007890;}.cru-logo .ld{fill:#00c0d8;}.cru-logo .le{fill:#f08020;}</style></defs><path d="M1064.32,692.4c-1.56,0-3.02-.29-4.38-.87-1.36-.58-2.56-1.39-3.59-2.42-1.03-1.03-1.84-2.23-2.42-3.59-.58-1.36-.87-2.82-.87-4.38s.29-3.02.87-4.38c.58-1.36,1.39-2.56,2.42-3.59,1.03-1.03,2.23-1.84,3.59-2.42,1.36-.58,2.82-.87,4.38-.87s3.02.29,4.38.87c1.36.58,2.56,1.39,3.59,2.42,1.03,1.03,1.84,2.23,2.42,3.59.58,1.36.87,2.82.87,4.38s-.29,3.02-.87,4.38c-.58,1.36-1.39,2.56-2.42,3.59s-2.23,1.84-3.59,2.42c-1.36.58-2.82.87-4.38.87ZM1064.32,690.3c1.69,0,3.23-.41,4.62-1.24s2.49-1.93,3.32-3.32c.83-1.39,1.24-2.93,1.24-4.62s-.41-3.23-1.24-4.62c-.83-1.39-1.93-2.49-3.32-3.32-1.39-.83-2.92-1.24-4.62-1.24s-3.23.41-4.62,1.24c-1.39.83-2.49,1.93-3.32,3.32-.83,1.39-1.24,2.93-1.24,4.62s.41,3.23,1.24,4.62c.83,1.39,1.93,2.49,3.32,3.32s2.93,1.24,4.62,1.24ZM1060.5,686.2v-10.4h4.99c.53,0,1.04.12,1.53.37.49.25.9.62,1.23,1.1s.49,1.08.49,1.78-.17,1.31-.5,1.83c-.33.51-.76.9-1.27,1.18-.51.27-1.04.41-1.59.41h-3.86v-1.42h3.38c.48,0,.91-.17,1.29-.51.38-.34.57-.83.57-1.47s-.19-1.13-.57-1.41c-.38-.28-.8-.42-1.25-.42h-2.62v8.98h-1.82ZM1066.56,681.36l2.59,4.83h-2.03l-2.52-4.83h1.96Z"/><polygon class="lb" points="955.07 426.93 955.07 624.93 930.32 624.93 930.32 451.68 757.07 451.68 757.07 426.93 955.07 426.93"/><polygon class="lc" points="930.32 371.24 806.57 371.24 806.57 395.99 955.07 395.99 955.07 247.5 930.32 247.5 930.32 371.24"/><polygon class="le" points="986.01 426.93 986.01 692.99 1010.76 692.99 1010.76 451.68 1134.5 451.68 1134.5 426.93 986.01 426.93"/><polygon class="ld" points="1010.76 371.24 1010.76 198 986.01 198 986.01 395.99 1184 395.99 1184 371.24 1010.76 371.24"/><path d="M409.8,731.53l17.86,16.67-4.65,5.49c-27.79,32.52-60.46,48.31-99.9,48.31-69.02,0-125.17-57.4-125.17-127.97v-.92c0-33.94,12.81-65.9,36.08-89.99,23.61-24.49,55.44-37.96,89.57-37.96,48.52,0,76.68,22.87,97.78,45.25l5.18,5.52-17.96,16.75-5.1-5.47c-24.14-25.78-49.71-37.8-80.38-37.8-56.08,0-99.98,45.38-99.98,103.28v.9c0,57.42,45.06,104.15,100.45,104.15,31.09,0,56.9-12.81,81.12-40.36l5.1-5.84ZM497.76,594.74v-44.06h-24.75v245.78h24.75v-127.05c0-41.73,32.41-99.98,85.24-99.98h9.83v-24.22l-8.43-.08c-39.36,0-68.97,21.87-86.64,49.6M806.57,550.68v137.19c0,57.08-29.4,89.86-80.64,89.86s-80.61-32.78-80.61-89.86v-137.19h-24.72v138.12c0,69.81,39.99,113.21,104.41,113.21h1.85c64.42,0,104.47-43.4,104.47-113.21v-138.12h-24.75Z"/></svg>
+        <span class="divider" aria-hidden="true"></span>
+        <span class="brand-name" id="siteTitle">Design Templates</span>
+      </div>
+      <nav aria-label="Page">
+        <button type="button" class="text-link" data-scroll="how">How it works</button>
+        <button type="button" class="text-link hide-sm" data-scroll="past" id="navPast">Past events</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">From Cru Creative 1 Media</p>
+        <h1>Beautiful designs, <mark>free</mark> for your movement.</h1>
+        <p class="lede">Tap <strong>Use this template</strong> and your own editable copy opens in Canva. A free account works, and the original never changes.</p>
+        <div class="hero-actions">
+          <button type="button" class="btn btn-primary btn-lg" data-scroll="designs" id="browseBtn">
+            <span id="browseLabel">Browse designs</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
+          </button>
+          <button type="button" class="text-link is-teal" data-scroll="how">See how it works</button>
+        </div>
+      </div>
+      <div class="hero-art count-3" id="heroArt" aria-hidden="true"><div class="fan fan-1 skel"></div><div class="fan fan-3 skel"></div><div class="fan fan-2 skel"></div></div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="filters panel" id="filters">
+      <div>
+        <label for="eventSelect" class="label">Event</label>
+        <select id="eventSelect" class="input" disabled><option>Loading designs...</option></select>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Filter by type"></div>
+      <div class="search">
+        <label for="q" class="label">Search</label>
+        <input id="q" class="input" type="search" placeholder='Try "invite" or "poster"' autocomplete="off">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap" id="designs">
+    <div class="past-note" id="pastNote" hidden>
+      <span>You're looking at a past event.</span>
+      <button type="button" class="text-link" id="backToCurrent">Back to current events</button>
+    </div>
+
+    <div class="event-head">
+      <div>
+        <h2 id="eventName">All designs</h2>
+        <p id="eventDesc" hidden></p>
+      </div>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+
+    <div class="grid" id="grid" aria-busy="true"><div class="col"><article class="card is-skel" aria-hidden="true"><div class="thumb"><div class="skel"></div></div><div class="card-body"><div class="skel" style="width:40%"></div><div class="skel line-title"></div><div class="skel" style="width:90%"></div><div class="skel line-btn"></div></div></article><article class="card is-skel" aria-hidden="true"><div class="thumb"><div class="skel"></div></div><div class="card-body"><div class="skel" style="width:40%"></div><div class="skel line-title"></div><div class="skel" style="width:90%"></div><div class="skel line-btn"></div></div></article></div><div class="col"><article class="card is-skel" aria-hidden="true"><div class="thumb"><div class="skel"></div></div><div class="card-body"><div class="skel" style="width:40%"></div><div class="skel line-title"></div><div class="skel" style="width:90%"></div><div class="skel line-btn"></div></div></article><article class="card is-skel" aria-hidden="true"><div class="thumb"><div class="skel"></div></div><div class="card-body"><div class="skel" style="width:40%"></div><div class="skel line-title"></div><div class="skel" style="width:90%"></div><div class="skel line-btn"></div></div></article></div><div class="col"><article class="card is-skel" aria-hidden="true"><div class="thumb"><div class="skel"></div></div><div class="card-body"><div class="skel" style="width:40%"></div><div class="skel line-title"></div><div class="skel" style="width:90%"></div><div class="skel line-btn"></div></div></article><article class="card is-skel" aria-hidden="true"><div class="thumb"><div class="skel"></div></div><div class="card-body"><div class="skel" style="width:40%"></div><div class="skel line-title"></div><div class="skel" style="width:90%"></div><div class="skel line-btn"></div></div></article></div><div class="col"><article class="card is-skel" aria-hidden="true"><div class="thumb"><div class="skel"></div></div><div class="card-body"><div class="skel" style="width:40%"></div><div class="skel line-title"></div><div class="skel" style="width:90%"></div><div class="skel line-btn"></div></div></article><article class="card is-skel" aria-hidden="true"><div class="thumb"><div class="skel"></div></div><div class="card-body"><div class="skel" style="width:40%"></div><div class="skel line-title"></div><div class="skel" style="width:90%"></div><div class="skel line-btn"></div></div></article></div></div>
+
+    <details class="past panel" id="past" hidden>
+      <summary><span>Past events (<span id="pastCount">0</span>)</span></summary>
+      <ul id="pastList"></ul>
+    </details>
+  </main>
+
+  <section class="how" id="how" aria-labelledby="howTitle">
+    <div class="wrap">
+      <h2 id="howTitle">How it works</h2>
+      <ol>
+        <li><div class="num">1</div><h3>Pick a design</h3><p>Choose your event, then find the poster, post or flyer you need.</p></li>
+        <li><div class="num">2</div><h3>Tap Use this template</h3><p>Canva opens your own copy. Sign in, or make a free account if it asks.</p></li>
+        <li><div class="num">3</div><h3>Make it yours</h3><p>Change the words, photos or language, then download or share. The original stays untouched.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <svg class="cru-logo" role="img" aria-label="Cru" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="194 194 994 612"><defs><style>.cru-logo .lb{fill:#ffd000;}.cru-logo .lc{fill:#007890;}.cru-logo .ld{fill:#00c0d8;}.cru-logo .le{fill:#f08020;}</style></defs><path d="M1064.32,692.4c-1.56,0-3.02-.29-4.38-.87-1.36-.58-2.56-1.39-3.59-2.42-1.03-1.03-1.84-2.23-2.42-3.59-.58-1.36-.87-2.82-.87-4.38s.29-3.02.87-4.38c.58-1.36,1.39-2.56,2.42-3.59,1.03-1.03,2.23-1.84,3.59-2.42,1.36-.58,2.82-.87,4.38-.87s3.02.29,4.38.87c1.36.58,2.56,1.39,3.59,2.42,1.03,1.03,1.84,2.23,2.42,3.59.58,1.36.87,2.82.87,4.38s-.29,3.02-.87,4.38c-.58,1.36-1.39,2.56-2.42,3.59s-2.23,1.84-3.59,2.42c-1.36.58-2.82.87-4.38.87ZM1064.32,690.3c1.69,0,3.23-.41,4.62-1.24s2.49-1.93,3.32-3.32c.83-1.39,1.24-2.93,1.24-4.62s-.41-3.23-1.24-4.62c-.83-1.39-1.93-2.49-3.32-3.32-1.39-.83-2.92-1.24-4.62-1.24s-3.23.41-4.62,1.24c-1.39.83-2.49,1.93-3.32,3.32-.83,1.39-1.24,2.93-1.24,4.62s.41,3.23,1.24,4.62c.83,1.39,1.93,2.49,3.32,3.32s2.93,1.24,4.62,1.24ZM1060.5,686.2v-10.4h4.99c.53,0,1.04.12,1.53.37.49.25.9.62,1.23,1.1s.49,1.08.49,1.78-.17,1.31-.5,1.83c-.33.51-.76.9-1.27,1.18-.51.27-1.04.41-1.59.41h-3.86v-1.42h3.38c.48,0,.91-.17,1.29-.51.38-.34.57-.83.57-1.47s-.19-1.13-.57-1.41c-.38-.28-.8-.42-1.25-.42h-2.62v8.98h-1.82ZM1066.56,681.36l2.59,4.83h-2.03l-2.52-4.83h1.96Z"/><polygon class="lb" points="955.07 426.93 955.07 624.93 930.32 624.93 930.32 451.68 757.07 451.68 757.07 426.93 955.07 426.93"/><polygon class="lc" points="930.32 371.24 806.57 371.24 806.57 395.99 955.07 395.99 955.07 247.5 930.32 247.5 930.32 371.24"/><polygon class="le" points="986.01 426.93 986.01 692.99 1010.76 692.99 1010.76 451.68 1134.5 451.68 1134.5 426.93 986.01 426.93"/><polygon class="ld" points="1010.76 371.24 1010.76 198 986.01 198 986.01 395.99 1184 395.99 1184 371.24 1010.76 371.24"/><path d="M409.8,731.53l17.86,16.67-4.65,5.49c-27.79,32.52-60.46,48.31-99.9,48.31-69.02,0-125.17-57.4-125.17-127.97v-.92c0-33.94,12.81-65.9,36.08-89.99,23.61-24.49,55.44-37.96,89.57-37.96,48.52,0,76.68,22.87,97.78,45.25l5.18,5.52-17.96,16.75-5.1-5.47c-24.14-25.78-49.71-37.8-80.38-37.8-56.08,0-99.98,45.38-99.98,103.28v.9c0,57.42,45.06,104.15,100.45,104.15,31.09,0,56.9-12.81,81.12-40.36l5.1-5.84ZM497.76,594.74v-44.06h-24.75v245.78h24.75v-127.05c0-41.73,32.41-99.98,85.24-99.98h9.83v-24.22l-8.43-.08c-39.36,0-68.97,21.87-86.64,49.6M806.57,550.68v137.19c0,57.08-29.4,89.86-80.64,89.86s-80.61-32.78-80.61-89.86v-137.19h-24.72v138.12c0,69.81,39.99,113.21,104.41,113.21h1.85c64.42,0,104.47-43.4,104.47-113.21v-138.12h-24.75Z"/></svg>
+      <p>Made by Cru Creative 1 Media for student and volunteer led movements.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
