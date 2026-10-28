@@ -48,7 +48,10 @@
             <span id="browseLabel">Browse designs</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
           </button>
-          <button type="button" class="text-link is-teal" data-scroll="how">See how it works</button>
+          <button type="button" class="btn btn-lg btn-watch" data-intro-open>
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".12"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg>
+            Watch the intro <span class="watch-len">2 min</span>
+          </button>
         </div>
       </div>
       <div class="hero-art count-3" id="heroArt" aria-hidden="true"><div class="fan fan-1 skel"></div><div class="fan fan-3 skel"></div><div class="fan fan-2 skel"></div></div>
@@ -100,8 +103,33 @@
         <li><div class="num">2</div><h3>Tap Use this template</h3><p>Canva opens your own copy. Sign in, or make a free account if it asks.</p></li>
         <li><div class="num">3</div><h3>Make it yours</h3><p>Change the words, photos or language, then download or share. The original stays untouched.</p></li>
       </ol>
+      <div class="how-video" id="howVideo">
+        <h3>Prefer to watch? Here's the 2-minute intro.</h3>
+        <video class="intro-video" controls preload="none" playsinline poster="intro-poster.jpg" aria-label="Design Templates intro video">
+          <source src="intro.mp4" type="video/mp4">
+          <a href="intro.mp4">Download the intro video</a>
+        </video>
+      </div>
     </div>
   </section>
+
+  <!-- Intro video pop-up: opens by itself once per browser, and anytime from "Watch the intro" -->
+  <dialog class="intro-dialog" id="introDialog" aria-labelledby="introTitle">
+    <div class="intro-head">
+      <div>
+        <p class="eyebrow">New here?</p>
+        <h2 id="introTitle">See how it works in 2 minutes</h2>
+      </div>
+      <button type="button" class="intro-x" data-intro-close aria-label="Close the video">&times;</button>
+    </div>
+    <video class="intro-video" controls preload="none" playsinline poster="intro-poster.jpg" aria-label="Design Templates intro video">
+      <source src="intro.mp4" type="video/mp4">
+    </video>
+    <div class="intro-foot">
+      <span class="quiet">Watch it anytime with the <b>Watch the intro</b> button at the top.</span>
+      <button type="button" class="btn" data-intro-close>Not now</button>
+    </div>
+  </dialog>
 
   <footer class="site-footer">
     <div class="wrap">
@@ -111,5 +139,6 @@
   </footer>
 
   <script src="app.js"></script>
+  <script src="intro.js"></script>
 </body>
 </html>

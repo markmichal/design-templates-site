@@ -10,6 +10,8 @@ A plain HTML, CSS, and JS page on GitHub Pages. No build step.
 | `styles.css` | The look (Cru Cornerstone colors, Sora and Inter, cards, arrows and dots, phone layout). |
 | `app.js` | Reads the list of designs and draws everything. |
 | `favicon.svg` | The Cru symbol for the browser tab. |
+| `intro.mp4`, `intro-poster.jpg` | The 2-minute intro video (music, no voiceover) and its cover picture (a frame from 1:18). Made web-ready with `ffmpeg -i in.mp4 -c copy -movflags +faststart intro.mp4` so it starts playing before it fully downloads. |
+| `intro.js` | The intro pop-up: opens by itself once per browser (marked as seen the moment it opens), and anytime from **Watch the intro**. The same video also plays in How it works. Only one video plays at a time. |
 | `CNAME` | The custom address. GoDaddy has a CNAME `templates` → `markmichal.github.io` on crutastic.com. |
 
 ## Where the designs come from
