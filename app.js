@@ -280,7 +280,7 @@
       ]);
       if (isSafeLink(t.canvaLink)) {
         var a = el('a', {
-          className: 'btn btn-primary', href: t.canvaLink, target: '_blank', rel: 'noopener noreferrer',
+          className: 'btn btn-primary', href: t.canvaLink, target: '_blank', rel: 'noopener noreferrer', 'data-tpl': t.id,
           'aria-label': 'Use this template: ' + t.title + ' (opens Canva in a new tab)'
         });
         a.innerHTML = '<span>Use <span class="long">this </span>template</span>' + EXTERNAL_ICON;
@@ -350,7 +350,7 @@
     b.addEventListener('click', function () { scrollToId(b.dataset.scroll); });
   });
   $('eventSelect').addEventListener('change', function (e) { selectEvent(e.target.value); });
-  $('q').addEventListener('input', function (e) { state.q = e.target.value; renderGrid(templatesForEvent()); });
+  $('q').addEventListener('input', function (e) { state.q = e.target.value; renderGrid(templatesForEvent()); watchSearch(); });
   $('backToCurrent').addEventListener('click', function () { selectEvent(liveEvents.length ? ALL : ''); });
 
   var lastCols = 0;
@@ -358,6 +358,91 @@
     var n = columnCount();
     if (n !== lastCols && DATA) { lastCols = n; renderGrid(templatesForEvent()); }
   });
+
+  /* ---------- Counting (no names or emails) ----------
+   * Sends a tiny note to the FEED program when someone opens the site, clicks
+   * "Use this template", or searches for something the gallery doesn't have.
+   * The visitor code is random, made up by this browser. It only tells
+   * "visits" apart from "people". The manager's Stats tab adds it all up.
+   * ?nocount=1 turns counting off in this browser (for Creative 1 testing); ?nocount=0 turns it back on.
+   */
+  var NOCOUNT_KEY = 'tplNoCount', VISITOR_KEY = 'tplVisitor', LAST_VISIT_KEY = 'tplLastVisit';
+  var VISIT_GAP = 30 * 60 * 1000;
+
+  function store(key, value) {
+    try {
+      if (value === undefined) return localStorage.getItem(key);
+      if (value === null) localStorage.removeItem(key); else localStorage.setItem(key, value);
+    } catch (e) { /* private window or blocked storage */ }
+    return null;
+  }
+
+  var visitor = store(VISITOR_KEY);
+  if (!/^[a-z0-9]{10,40}$/.test(visitor || '')) {
+    visitor = '';
+    var bytes = new Uint8Array(16);
+    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    for (var b = 0; b < bytes.length; b++) visitor += (bytes[b] % 36).toString(36);
+    store(VISITOR_KEY, visitor);
+  }
+
+  (function readNoCount() {
+    var params = new URLSearchParams(location.search);
+    if (!params.has('nocount')) return;
+    var off = params.get('nocount') !== '0';
+    store(NOCOUNT_KEY, off ? '1' : null);
+    params.delete('nocount');
+    var rest = params.toString();
+    try { history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '')); } catch (e) { /* fine */ }
+    var note = el('div', { className: 'count-note', role: 'status',
+      text: off ? 'Got it. Clicks in this browser won\'t be counted in the stats.' : 'Clicks in this browser count in the stats again.' });
+    document.body.appendChild(note);
+    setTimeout(function () { note.remove(); }, 6000);
+  })();
+
+  function countIt(kind, extra) {
+    if (store(NOCOUNT_KEY) === '1') return;
+    var url = FEED + '?track=1&k=' + kind + '&v=' + visitor;
+    Object.keys(extra || {}).forEach(function (k) { url += '&' + k + '=' + encodeURIComponent(extra[k]); });
+    try {
+      fetch(url, { mode: 'no-cors', keepalive: true, cache: 'no-store', credentials: 'omit' }).catch(function () {});
+    } catch (e) {
+      new Image().src = url;
+    }
+  }
+
+  // A visit: at most once every 30 minutes per browser
+  (function () {
+    var last = Number(store(LAST_VISIT_KEY) || 0);
+    if (Date.now() - last > VISIT_GAP) countIt('visit');
+    store(LAST_VISIT_KEY, String(Date.now()));
+  })();
+
+  // "Use this template" clicks (including middle-click to a new tab)
+  function onTemplateClick(e) {
+    var a = e.target.closest && e.target.closest('a[data-tpl]');
+    if (!a || (e.type === 'auxclick' && e.button !== 1)) return;
+    countIt('click', { t: a.getAttribute('data-tpl') });
+  }
+  document.addEventListener('click', onTemplateClick);
+  document.addEventListener('auxclick', onTemplateClick);
+
+  // Searches that match nothing anywhere in the gallery, once the person stops typing
+  var searchTimer, lastSearchSent = '';
+  function watchSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () {
+      var q = state.q.trim().toLowerCase().replace(/\s+/g, ' ');
+      if (q.length < 3 || q === lastSearchSent || !DATA) return;
+      var found = DATA.templates.some(function (t) {
+        var ev = eventById(t.eventId);
+        return (t.title + ' ' + t.tip + ' ' + t.category + ' ' + t.format + ' ' + (ev ? ev.name : '')).toLowerCase().indexOf(q) >= 0;
+      });
+      if (found) return;
+      lastSearchSent = q;
+      countIt('search', { q: q.slice(0, 60) });
+    }, 1500);
+  }
 
   /* ---------- Loading the designs ---------- */
 

@@ -24,6 +24,13 @@ The page asks the gallery's **Google Apps Script** program for the list of event
 - **If Google is down:** returning visitors still see their saved list. First-time visitors see a friendly "couldn't load" message with a Try again button.
 - `?event=<event id>` opens one event, and picking an event updates the address so it can be shared.
 
+## Usage counting
+
+`app.js` sends a tiny note to the same `FEED` program (`?track=1&k=visit|click|search`) when someone opens the site (once per 30 minutes per browser), clicks **Use this template**, or searches for something nothing in the gallery matches. No names or emails: the browser makes up a random visitor code (`tplVisitor` in localStorage) so the stats can tell visits from people. The rows land on the **Activity** tab of the gallery's Google Sheet, and the Template Manager's **Stats** tab adds them up.
+
+- `?nocount=1` stops counting in that browser (the Stats tab has a **Don't count my clicks** button for this). `?nocount=0` turns it back on.
+- The footer says what is counted.
+
 ## Changing it
 
 Edit the files, commit, and push to `main`. GitHub Pages publishes in about a minute (it caches for up to 10 minutes, so use Cmd+Shift+R to check).
