@@ -46,6 +46,8 @@
 
   // First visit: show it once, after the page has drawn. If this browser can't remember
   // (some private windows), don't pop it up at all, so nobody sees it on every visit.
+  // Skipped when arriving from the Template Manager (app.js sets tplSkipIntro), so it doesn't cover the counting note.
+  if (window.tplSkipIntro) rememberSeen();
   if (storageWorks() && !seenBefore()) {
     rememberSeen();
     setTimeout(open, 900);

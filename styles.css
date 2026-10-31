@@ -72,7 +72,16 @@
     bottom: calc(20px + env(safe-area-inset-bottom, 0px)); max-width: calc(100% - 32px);
     padding: 12px 16px; border-radius: var(--r-control); background: var(--dark); color: #fff;
     font-size: 15px; box-shadow: var(--shadow-panel);
+    display: flex; align-items: flex-start; gap: 12px; width: 460px;
   }
+  .count-note p { margin: 0; line-height: 1.45; }
+  .count-note-close {
+    flex: none; width: 32px; height: 32px; margin: -4px -6px -4px 0; border: 0; border-radius: 50%;
+    background: transparent; color: #fff; font-size: 16px; cursor: pointer;
+  }
+  .count-note-close:hover { background: rgba(255,255,255,.12); }
+  .count-note-close:focus-visible { outline: 3px solid var(--brand); outline-offset: 1px; }
+  .site-footer .nocount-line a { color: inherit; }
 
   /* Controls */
   .btn {

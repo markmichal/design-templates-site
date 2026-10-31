@@ -28,7 +28,7 @@ The page asks the gallery's **Google Apps Script** program for the list of event
 
 `app.js` sends a tiny note to the same `FEED` program (`?track=1&k=visit|click|search`) when someone opens the site (once per 30 minutes per browser), clicks **Use this template**, or searches for something nothing in the gallery matches. No names or emails: the browser makes up a random visitor code (`tplVisitor` in localStorage) so the stats can tell visits from people. The rows land on the **Activity** tab of the gallery's Google Sheet, and the Template Manager's **Stats** tab adds them up.
 
-- `?nocount=1` stops counting in that browser (the Stats tab has a **Don't count my clicks** button for this). `?nocount=0` turns it back on.
+- `?nocount=1` stops counting in that browser for good (until its saved data is cleared). Every gallery link in the Template Manager adds it, so managers are skipped automatically once they've opened the gallery from there. It also skips the intro pop-up so the "Got it" note isn't covered. The note only shows when the setting changes, and the footer says "Not counting clicks on this browser" with a link to `?nocount=0` to turn it back on. (The gallery can't read a manager's Google sign-in: it's a different site, Safari blocks that, and it would slow every visit.)
 - The footer says what is counted.
 
 ## Changing it

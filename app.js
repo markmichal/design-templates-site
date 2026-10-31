@@ -388,16 +388,35 @@
 
   (function readNoCount() {
     var params = new URLSearchParams(location.search);
-    if (!params.has('nocount')) return;
-    var off = params.get('nocount') !== '0';
-    store(NOCOUNT_KEY, off ? '1' : null);
-    params.delete('nocount');
-    var rest = params.toString();
-    try { history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '')); } catch (e) { /* fine */ }
-    var note = el('div', { className: 'count-note', role: 'status',
-      text: off ? 'Got it. Clicks in this browser won\'t be counted in the stats.' : 'Clicks in this browser count in the stats again.' });
-    document.body.appendChild(note);
-    setTimeout(function () { note.remove(); }, 6000);
+    if (params.has('nocount')) {
+      var off = params.get('nocount') !== '0';
+      var wasOff = store(NOCOUNT_KEY) === '1';
+      store(NOCOUNT_KEY, off ? '1' : null);
+      params.delete('nocount');
+      var rest = params.toString();
+      try { history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '')); } catch (e) { /* fine */ }
+      // Arriving from the manager: don't let the intro pop-up cover the note (intro.js reads this)
+      window.tplSkipIntro = true;
+      // Say so only when something changed, so managers who come through the manager every day aren't nagged
+      if (off !== wasOff) {
+        var note = el('div', { className: 'count-note', role: 'status' }, [
+          el('p', { text: off
+            ? 'Got it. Your clicks on this browser won\'t be counted in the stats. It stays this way, even when you come straight to this page.'
+            : 'Clicks on this browser count in the stats again.' }),
+          el('button', { type: 'button', className: 'count-note-close', 'aria-label': 'Close', text: '\u2715' })
+        ]);
+        note.querySelector('button').addEventListener('click', function () { note.remove(); });
+        document.body.appendChild(note);
+      }
+    }
+    // Footer: a standing reminder on browsers that aren't counted
+    if (store(NOCOUNT_KEY) === '1') {
+      var line = el('p', { className: 'privacy nocount-line', text: 'Not counting clicks on this browser. ' });
+      var again = el('a', { href: '?nocount=0', text: 'Count them again' });
+      line.appendChild(again);
+      var foot = document.querySelector('.site-footer .footer-text');
+      if (foot) foot.appendChild(line);
+    }
   })();
 
   function countIt(kind, extra) {
