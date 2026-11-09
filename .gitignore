@@ -1,0 +1,6 @@
+.DS_Store
+.env*
+!.env.example
+chats/
+node_modules/
+# intro.mp4 is part of the live site, so it stays tracked
