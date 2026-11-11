@@ -11,6 +11,7 @@
   'use strict';
   // Where the designs come from: the gallery's Google Apps Script program.
   var FEED = 'https://script.google.com/macros/s/AKfycbwQioMI8A0DwemLLLtDo0CLR_eKjR0uKSSAraKZ__efaqtBXoFVQWe3H0fU-A4Uf4ySNg/exec';
+  window.tplFeed = FEED; // feedback.js sends notes to the same program
   var SAVED_KEY = 'tplGalleryData_v1';   // last list of designs, so repeat visits show instantly
   var TITLE = document.title;
   var PREVIEW_KEY = 'tplPreview';       // private preview link's key: sees the gallery even while it's closed

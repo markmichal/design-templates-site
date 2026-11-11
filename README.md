@@ -11,6 +11,7 @@ A plain HTML, CSS, and JS page on GitHub Pages. No build step.
 | `app.js` | Reads the list of designs and draws everything. |
 | `favicon.svg` | The Cru symbol for the browser tab. |
 | `intro.mp4`, `intro-poster.jpg` | The 2-minute intro video (music, no voiceover) and its cover picture (a frame from 1:18). Made web-ready with `ffmpeg -i in.mp4 -c copy -movflags +faststart intro.mp4` so it starts playing before it fully downloads. |
+| `feedback.js` | The prototype bar's **Share feedback** form. Sends name, email (both optional) and message to the FEED program (doPost in Feedback.gs), which saves it on the Sheet's Feedback tab. Has a hidden box that only robots fill in, and Google limits how many notes come in. Delete the bar (top of `index.html`), the dialog and this file at launch. |
 | `intro.js` | The intro pop-up: opens by itself once per browser (marked as seen the moment it opens), and anytime from **Watch the intro**. The same video also plays in How it works. Only one video plays at a time. |
 | `share-preview-3.jpg` | The 1200 × 630 picture that shows when the link is texted or posted (set by the `og:image` tags in `index.html`). It's a fixed picture of three real designs, so it doesn't change when new designs are added. Apps like iMessage and Facebook remember it for a while, so after replacing it, rename the file (and the tag) to make them pick up the new one. |
 | `CNAME` | The custom address. GoDaddy has a CNAME `templates` → `markmichal.github.io` on crutastic.com. |
