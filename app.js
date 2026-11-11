@@ -1,6 +1,6 @@
 /*
  * Design Templates gallery (templates.crutastic.com)
- * Cru Creative 1 Media's free Canva templates.
+ * Cru's free Canva templates.
  *
  * This page lives on GitHub Pages. The list of events and designs comes from the
  * gallery's Google Apps Script program (the FEED address below), which is also
