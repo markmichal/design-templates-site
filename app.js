@@ -12,8 +12,26 @@
   // Where the designs come from: the gallery's Google Apps Script program.
   var FEED = 'https://script.google.com/macros/s/AKfycbwQioMI8A0DwemLLLtDo0CLR_eKjR0uKSSAraKZ__efaqtBXoFVQWe3H0fU-A4Uf4ySNg/exec';
   var SAVED_KEY = 'tplGalleryData_v1';   // last list of designs, so repeat visits show instantly
+  var TITLE = document.title;
+  var PREVIEW_KEY = 'tplPreview';       // private preview link's key: sees the gallery even while it's closed
   var DATA = null;
   var START_EVENT = new URLSearchParams(location.search).get('event') || '';
+
+  // ?preview=<key> (the manager's private preview link): remember it in this browser, tidy the address
+  var preview = '';
+  (function readPreview() {
+    var params = new URLSearchParams(location.search);
+    try {
+      if (params.has('preview')) localStorage.setItem(PREVIEW_KEY, params.get('preview'));
+      preview = localStorage.getItem(PREVIEW_KEY) || '';
+    } catch (e) { preview = params.get('preview') || ''; }
+    if (!/^[a-z0-9]{8,40}$/i.test(preview)) preview = '';
+    if (!params.has('preview')) return;
+    params.delete('preview');
+    var rest = params.toString();
+    try { history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '')); } catch (e) { /* fine */ }
+  })();
+  var PREVIEW_PARAM = preview ? '&preview=' + encodeURIComponent(preview) : '';
 
   var state = { eventId: '', category: 'All', q: '' };
   var imageCache = {};
@@ -60,7 +78,7 @@
 
   function loadInline(img, t, box) {
     if (imageCache[t.imgId]) { img.src = imageCache[t.imgId]; return; }
-    fetch(FEED + '?format=json&img=' + encodeURIComponent(t.imgId))
+    fetch(FEED + '?format=json&img=' + encodeURIComponent(t.imgId) + PREVIEW_PARAM)
       .then(function (r) { return r.json(); })
       .then(function (j) {
         if (!j.image) throw new Error('no image');
@@ -492,6 +510,17 @@
     render();
   }
 
+  // A manager closed the gallery: show only "Coming soon", and forget the saved designs
+  function showClosed() {
+    DATA = null;
+    shown = '';
+    document.body.classList.remove('is-loading');
+    document.body.classList.add('is-closed');
+    var intro = $('introDialog');
+    if (intro && intro.open) intro.close();
+    document.title = 'Coming soon | Design Templates';
+  }
+
   function showError() {
     if (DATA) return; // keep showing the saved copy
     var grid = $('grid');
@@ -510,10 +539,19 @@
   function load() {
     var ctrl = 'AbortController' in window ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
-    fetch(FEED + '?format=json', { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined })
+    fetch(FEED + '?format=json' + PREVIEW_PARAM, { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (data) {
         clearTimeout(timer);
+        if (data && data.closed) {
+          try { localStorage.setItem(SAVED_KEY, JSON.stringify({ savedAt: Date.now(), closed: true })); } catch (e) { /* private window */ }
+          showClosed();
+          return;
+        }
+        if (document.body.classList.contains('is-closed')) { // it just reopened
+          document.body.classList.remove('is-closed');
+          document.title = TITLE;
+        }
         if (!data || data.error || !Array.isArray(data.events)) throw new Error((data && data.error) || 'bad data');
         try { localStorage.setItem(SAVED_KEY, JSON.stringify({ savedAt: Date.now(), data: data })); } catch (e) { /* private window */ }
         show(data);
@@ -524,7 +562,8 @@
   // 1) Show what this browser saw last time, right away (if anything)
   try {
     var saved = JSON.parse(localStorage.getItem(SAVED_KEY) || 'null');
-    if (saved && saved.data && Array.isArray(saved.data.events)) show(saved.data);
+    if (saved && saved.closed) showClosed();
+    else if (saved && saved.data && Array.isArray(saved.data.events)) show(saved.data);
   } catch (e) { /* nothing saved, or private window */ }
   // 2) Get the latest from Google and update the page if anything changed
   load();

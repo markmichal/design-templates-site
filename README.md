@@ -32,6 +32,12 @@ The page asks the gallery's **Google Apps Script** program for the list of event
 - `?nocount=1` stops counting in that browser for good (until its saved data is cleared). Every gallery link in the Template Manager adds it, so managers are skipped automatically once they've opened the gallery from there. It also skips the intro pop-up so the "Got it" note isn't covered. The note only shows when the setting changes, and the footer says "Not counting clicks on this browser" with a link to `?nocount=0` to turn it back on. (The gallery can't read a manager's Google sign-in: it's a different site, Safari blocks that, and it would slow every visit.)
 - The footer says what is counted.
 
+## Closed ("Coming soon") and the preview link
+
+A manager can close the gallery on the Template Manager's Settings tab. Then the feed answers `{"closed": true}` instead of the designs, and the page hides everything but a "Coming soon" message (`body.is-closed`, with `.open-only` and `.closed-only` in `index.html`). It also replaces the visitor's saved copy with a "closed" note, so returning visitors see Coming soon right away instead of old designs. The intro pop-up waits until the gallery is open.
+
+The private preview link (`?preview=<key>`, copied from the Settings tab) still sees everything. The page remembers the key in that browser (`tplPreview`) and sends it with every feed request. The manager's own gallery links carry it too. Making a new link on the Settings tab cuts off the old one.
+
 ## Changing it
 
 Edit the files, commit, and push to `main`. GitHub Pages publishes in about a minute (it caches for up to 10 minutes, so use Cmd+Shift+R to check).

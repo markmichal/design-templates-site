@@ -67,6 +67,11 @@
   .site-footer p { margin: 0; font-size: 14px; }
   .site-footer .footer-text { display: grid; gap: 4px; }
   .site-footer .privacy { font-size: 13px; color: #a3a3a0; }
+  /* Gallery closed by a manager: only the "Coming soon" message shows */
+  body.is-closed .open-only { display: none !important; }
+  body.is-closed .closed-only { display: block !important; }
+  body.is-closed .hero-grid { grid-template-columns: minmax(0, 1fr); }
+  body.is-closed .hero { padding-bottom: 120px; }
   .count-note {
     position: fixed; left: 50%; transform: translateX(-50%); z-index: 50;
     bottom: calc(20px + env(safe-area-inset-bottom, 0px)); max-width: calc(100% - 32px);

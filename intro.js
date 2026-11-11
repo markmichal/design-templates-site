@@ -48,8 +48,12 @@
   // (some private windows), don't pop it up at all, so nobody sees it on every visit.
   // Skipped when arriving from the Template Manager (app.js sets tplSkipIntro), so it doesn't cover the counting note.
   if (window.tplSkipIntro) rememberSeen();
+  // Not while the gallery is closed ("Coming soon"): it waits for a visit when it's open.
   if (storageWorks() && !seenBefore()) {
-    rememberSeen();
-    setTimeout(open, 900);
+    setTimeout(function () {
+      if (document.body.classList.contains('is-closed')) return;
+      rememberSeen();
+      open();
+    }, 900);
   }
 })();

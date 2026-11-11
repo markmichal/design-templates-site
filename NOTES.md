@@ -6,6 +6,7 @@ The README is the technical guide (files, where the designs come from, usage cou
 The gallery first ran as a Google Apps Script page, which took about 3 seconds to show and had Google's banner on top. Mark wanted the public gallery of Creative 1 Media's free Canva templates to open instantly at a friendly address, so this GitHub Pages site shows the page and reads the list of designs from the Apps Script data feed.
 
 ## Decisions
+- 2026-11-10: **The gallery can be closed ("Coming soon") from the manager's Settings tab, and was closed today.** Some people said it wasn't quite ready to be public. Closed means the feed sends no designs, pictures or Canva links to anyone except people with the private preview link, and visitors' saved copies are wiped. Mark chose a switch over turning the website off, because turning GitHub Pages off and on can break the secure lock and DNS. Copies people already made in Canva, and Canva links someone saved, still work.
 - 2026-10-15: Public gallery lives here at templates.crutastic.com; data, manager, Sheet and Drive stay on Google.
 - 2026-10-15: Team name is "Creative 1 Media" (numeral 1), never "Creative One".
 - 2026-10-28: 2-minute intro video: pops up once per browser, plus a Watch the intro button and a player in How it works.
