@@ -398,3 +398,13 @@
     .fb-body { padding: 4px 14px 0; }
     .fb-dialog .intro-foot .btn { flex: 1; width: auto; }
   }
+
+  /* Grey dot, bottom left: the manager's sign-in. Quiet on purpose. */
+  .mgr-dot {
+    position: fixed; left: 14px; bottom: 14px; z-index: 40;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #b5b5b2; opacity: .55; transition: opacity .15s, transform .15s;
+  }
+  .mgr-dot::after { content: ""; position: absolute; inset: -15px; } /* bigger tap area */
+  .mgr-dot:hover, .mgr-dot:focus-visible { opacity: 1; transform: scale(1.15); }
+  .mgr-dot:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
